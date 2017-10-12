@@ -38,7 +38,11 @@ public class Choice {
 		this.choiceText = choiceText;
 		this.votes = votes;
 	}
-
+	
+	public void addVote() {
+		this.votes += 1;
+	}
+	
 	public int getId() {
 		return id;
 	}

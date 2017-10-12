@@ -1,13 +1,10 @@
 package hibernate.entity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,14 +26,14 @@ public class Question {
 	@Column(name="pubDate", length=32)
 	private String pubDate;
 	
-	@OneToMany(mappedBy = "question")
-	private Set<Choice> choices = new HashSet<Choice>();
+	@OneToMany(mappedBy="question")
+	private List<Choice> choices = new ArrayList<Choice>();
 	
 	public Question() {
 		
 	}
 	
-	public Question(String questionText, String pubDate, Set<Choice> choices) {
+	public Question(String questionText, String pubDate, List<Choice> choices) {
 
 		this.questionText = questionText;
 		this.pubDate = pubDate;
@@ -72,11 +69,11 @@ public class Question {
 		return "Question [id=" + id + ", questionText=" + questionText + ", pubDate=" + pubDate + "]";
 	}
 
-	public Set<Choice> getChoices() {
+	public List<Choice> getChoices() {
 		return choices;
 	}
 
-	public void setChoices(Set<Choice> choices) {
+	public void setChoices(List<Choice> choices) {
 		this.choices = choices;
 	}
 	

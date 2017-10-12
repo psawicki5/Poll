@@ -11,9 +11,10 @@ import hibernate.entity.Question;
 import hibernate.util.HibernateUtil;
 
 @Controller
+
 public class HomeController {
 	
-	@RequestMapping("/")
+	@RequestMapping(value="/")
 	public String showHome(Model model) {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
