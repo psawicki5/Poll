@@ -9,9 +9,13 @@
 <title>Question no ${question.id}</title>
 </head>
 <body>
-	<c:forEach items="${choices}" var="choice">
-		<p>${choice.choiceText}</p>
-	</c:forEach>
+	<form action="/polltwo/vote/${question.id}" method="POST">
+		<c:forEach items="${choices}" var="choice">	
+			<input type="radio" value="${choice.id}" name="choiceId">${choice.choiceText}<br>
+		</c:forEach>
+		<input type="submit"/>
+	</form>
+	
 
 </body>
 </html>

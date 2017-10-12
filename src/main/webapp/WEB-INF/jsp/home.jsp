@@ -14,7 +14,7 @@
 		<c:url var="questionUrl" value="/vote">
    			<c:param name="questionId" value="${question.id}"/>
 		</c:url>
-		<p><a href="${questionUrl}">${question.questionText}</a></p>
+		<p><a href="vote/${question.id}">${question.questionText}</a></p>
 	</c:forEach>
 </body>
 </html>
