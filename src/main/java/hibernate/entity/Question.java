@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name="Question")
@@ -26,7 +29,7 @@ public class Question {
 	@Column(name="pubDate", length=32)
 	private String pubDate;
 	
-	@OneToMany(mappedBy="question")
+	@OneToMany(mappedBy="question", fetch=FetchType.EAGER)
 	private List<Choice> choices = new ArrayList<Choice>();
 	
 	public Question() {
@@ -72,7 +75,7 @@ public class Question {
 	public List<Choice> getChoices() {
 		return choices;
 	}
-
+	
 	public void setChoices(List<Choice> choices) {
 		this.choices = choices;
 	}

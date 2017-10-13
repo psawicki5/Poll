@@ -2,7 +2,7 @@ package polltwo.controller;
 
 import java.util.List;
 
-import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,12 +12,18 @@ import org.springframework.web.context.request.WebRequest;
 
 import hibernate.entity.Choice;
 import hibernate.entity.Question;
-import hibernate.util.HibernateUtil;
+import polltwo.dao.ChoiceDAO;
+import polltwo.dao.QuestionDAO;
 import exceptions.QuestionNotFoundException;
 
 @Controller
 @RequestMapping(value="/vote/{questionId}")
 public class VoteController {
+	
+	@Autowired
+	private QuestionDAO questionDAO;
+	@Autowired
+	private ChoiceDAO choiceDAO;
 	
 	/**
 	 * Displays voting form
@@ -26,14 +32,10 @@ public class VoteController {
 	 */
 	@RequestMapping(method=RequestMethod.GET)
 	public String showChoices(@PathVariable("questionId") int questionId, Model model) {
-		
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		Question question = session.get(Question.class, questionId);
+	
+		Question question = questionDAO.getQuestion(questionId);
 		if (question == null) throw new QuestionNotFoundException();
-		List<Choice> choices = session.createQuery("from Choice choice where choice.question = :question")
-				.setParameter("question", question).list();
-		session.close();
+		List<Choice> choices = question.getChoices();
 		
 		model.addAttribute("question", question);
 		model.addAttribute("choices", choices);
@@ -48,16 +50,12 @@ public class VoteController {
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public String voteOnChoice(@PathVariable("questionId") int questionId, WebRequest request) {
-		String choiceId = request.getParameter("choiceId");
+		Integer choiceId = Integer.parseInt(request.getParameter("choiceId"));
 		
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		Choice choice = session.get(Choice.class, Integer.parseInt(choiceId));
+		Choice choice = choiceDAO.getChoice(choiceId);
 		
 		choice.addVote();
-		session.getTransaction().commit();
-		session.close();
-		
+		choiceDAO.updateChoice(choice);
 		return "home";
 	}
 	
